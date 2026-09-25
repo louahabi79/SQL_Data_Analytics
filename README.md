@@ -1,46 +1,123 @@
 # SQL Data Analytics Project
 
-A SQL Server–based analytics project focused on exploring a retail sales dataset, building a lightweight data warehouse, and running business-oriented analysis using SQL. The project is structured as a hands-on learning exercise in dimensional modeling, data exploration, KPI calculation, trend analysis, segmentation, and reporting.
+Designed and implemented a SQL-based retail analytics project to explore customer and product behavior, measure sales performance, and build a lightweight analytical data model in SQL Server. The repository contains a set of T-SQL scripts that create the database, load CSV data, and answer business-focused questions using aggregation, date analysis, segmentation, and reporting views.
 
 ## Project Overview
 
-This repository contains a complete example of how to:
+This project was developed to practice and demonstrate core Data Analytics and Data Engineering skills using a realistic sales dataset. The repository models a simple analytical warehouse around customer, product, and sales data and applies SQL techniques to investigate revenue trends, customer value, product performance, and category contribution.
 
-- create a database and core analytical schemas,
-- load curated CSV datasets into a SQL Server warehouse,
-- investigate the structure of the data,
-- calculate sales and customer metrics,
-- analyze trends over time,
-- segment customers and products,
-- rank top-performing entities,
-- generate report-style views for operational analysis.
+The dataset includes customer profile data, product catalog information, and transaction history. The analysis is structured around a gold-layer schema with a fact table and dimension tables, allowing business questions to be answered through SQL rather than manual spreadsheet analysis.
 
-The project uses a gold-layer schema with a star-like design based on three main entities:
+## Project Objectives
 
-- customers,
-- products,
-- sales transactions.
+The project focuses on the following objectives:
 
-This makes it a good reference for SQL analytics workflows, business intelligence questions, and data warehouse learning exercises.
+- Build a SQL Server database and analytical schema from source CSV files
+- Load dimensional and fact data into a warehouse structure
+- Inspect the database schema and understand table relationships
+- Calculate core sales and customer KPIs
+- Analyze time-based sales trends and cumulative performance
+- Rank top products and customers by business value
+- Segment customers and products based on spending and cost profile
+- Create reusable reporting views for customer and product analysis
 
-## Business Context
+## Technologies & Skills
 
-The dataset represents a fictional retail and sales environment with:
+The project demonstrates the following technologies and SQL/data concepts:
 
-- customer information,
-- product catalog details,
-- sales transaction records,
-- historical ordering and shipping dates,
-- pricing and quantity data.
+- SQL Server
+- T-SQL
+- SSMS
+- Bulk data loading with BULK INSERT
+- Data warehousing basics
+- Dimensional modeling
+- Fact and dimension tables
+- Aggregations and grouping
+- Date functions and time-series analysis
+- Window functions
+- CTEs and subqueries
+- CASE logic for segmentation
+- Views for analytical reporting
+- Customer and product analysis
 
-The objective is to transform raw information into analytical insight by examining:
+## Data Architecture / Data Model
 
-- revenue generation,
-- customer behavior,
-- product performance,
-- time-based changes in sales,
-- customer and product segmentation,
-- contribution of categories to total sales.
+The repository uses a gold-layer warehouse structure based on three core tables:
+
+- gold.dim_customers
+- gold.dim_products
+- gold.fact_sales
+
+These tables form the analytical foundation for the project.
+
+### Fact and dimension design
+
+- gold.dim_customers stores customer profile information such as name, country, gender, marital status, and birthdate.
+- gold.dim_products stores catalog information such as product name, category, subcategory, cost, and product line.
+- gold.fact_sales stores transactional sales records including order dates, quantity, sales_amount, and the keys linking to the customer and product dimensions.
+
+This structure reflects a dimensional model commonly used in modern analytics environments, where fact tables store measurable events and dimension tables store descriptive attributes.
+
+```mermaid
+flowchart LR
+    A[CSV datasets] --> B[00_init_database.sql]
+    B --> C[gold.dim_customers]
+    B --> D[gold.dim_products]
+    B --> E[gold.fact_sales]
+    C --> F[Customer analysis]
+    D --> G[Product analysis]
+    E --> H[Sales KPI and time analysis]
+    F --> I[Customer reporting view]
+    G --> J[Product reporting view]
+    H --> K[Business insights]
+```
+
+## What I Implemented
+
+The project includes the practical implementation of a complete SQL analytics workflow:
+
+- Created the DataWarehouseAnalytics database and the gold schema
+- Built the core warehouse tables for customers, products, and sales
+- Loaded structured CSV data into SQL Server using BULK INSERT
+- Explored the database and table metadata to understand the available fields and schema
+- Calculated total sales, total quantity, average price, total orders, and customer/product counts
+- Analyzed the date range and historical coverage of the order data
+- Evaluated category and customer distributions to understand volume and concentration
+- Ranked products and customers by total revenue and order activity
+- Applied time-based analysis using year and month grouping, cumulative totals, and moving averages
+- Implemented customer and product segmentation logic using CASE expressions
+- Examined category contribution to total sales using part-to-whole calculations
+- Created analytical views for customer and product reporting
+
+This work was implemented as a set of sequential SQL scripts, each focused on a specific analytical task, allowing the project to progress from data loading to insight generation.
+
+## Business Questions
+
+The SQL analysis was designed to answer business questions such as:
+
+- Which countries have the largest customer base?
+- Which product categories contribute the most to total revenue?
+- Which customers generate the highest sales volume?
+- Which products rank highest in sales performance?
+- How do sales evolve over time by month or year?
+- How do rankings and trends change across different product lines?
+- Which customer segments are high-value, regular, or new?
+- What share of total sales comes from each product category?
+- Which products or customers are performing above or below average?
+
+## Key Results / Insights
+
+The repository contains the SQL logic needed to generate these insights, but it does not include a final dashboard or exported result tables. The analysis is intentionally structured to support the following types of findings:
+
+- revenue concentration by category and customer,
+- top-performing products and customers by sales contribution,
+- monthly and yearly sales trends,
+- cumulative revenue progression over time,
+- customer segmentation based on purchase behavior and lifespan,
+- product cost segmentation and category performance,
+- customer and product reporting views summarizing key business KPIs.
+
+The scripts specifically include measures such as total sales, quantity sold, average selling price, customer counts, product counts, recency, and average order value, with logic to support ranking and segmentation analysis.
 
 ## Repository Structure
 
@@ -50,10 +127,23 @@ SQL_Data_Analytics/
 ├── datasets/
 │   ├── DataWarehouseAnalytics.bak
 │   └── csv_files/
+│       ├── bronze.crm_cust_info.csv
+│       ├── bronze.crm_prd_info.csv
+│       ├── bronze.crm_sales_details.csv
+│       ├── bronze.erp_cust_az12.csv
+│       ├── bronze.erp_loc_a101.csv
+│       ├── bronze.erp_px_cat_g1v2.csv
 │       ├── gold.dim_customers.csv
 │       ├── gold.dim_products.csv
 │       ├── gold.fact_sales.csv
-│       └── ... additional silver/bronze source files
+│       ├── gold.report_customers.csv
+│       ├── gold.report_products.csv
+│       ├── silver.crm_cust_info.csv
+│       ├── silver.crm_prd_info.csv
+│       ├── silver.crm_sales_details.csv
+│       ├── silver.erp_cust_az12.csv
+│       ├── silver.erp_loc_a101.csv
+│       └── silver.erp_px_cat_g1v2.csv
 ├── scripts/
 │   ├── 00_init_database.sql
 │   ├── 01_database_exploration.sql
@@ -70,298 +160,92 @@ SQL_Data_Analytics/
 │   ├── 12_report_customers.sql
 │   ├── 13_report_products.sql
 │   └── placeholder
-└── ...
+└── README.md
 ```
 
-## Data Model
+## How to Run
 
-The warehouse is built in the gold schema and contains the following main tables:
+### Requirements
 
-### 1. gold.dim_customers
+- Microsoft SQL Server
+- SQL Server Management Studio (SSMS) or another SQL Server client
+- Permissions to create and drop databases
+- Local filesystem access for BULK INSERT operations
 
-Customer dimension table.
+### Setup steps
 
-Key fields include:
-
-- customer_key
-- customer_id
-- customer_number
-- first_name
-- last_name
-- country
-- marital_status
-- gender
-- birthdate
-- create_date
-
-This table holds customer profile information and supports segmentation by geography, age, and demographics.
-
-### 2. gold.dim_products
-
-Product dimension table.
-
-Key fields include:
-
-- product_key
-- product_id
-- product_number
-- product_name
-- category_id
-- category
-- subcategory
-- maintenance
-- cost
-- product_line
-- start_date
-
-This table supports category and product analysis such as revenue ranking, profitability review, and product categorization.
-
-### 3. gold.fact_sales
-
-Sales fact table.
-
-Key fields include:
-
-- order_number
-- product_key
-- customer_key
-- order_date
-- shipping_date
-- due_date
-- sales_amount
-- quantity
-- price
-
-This is the transactional layer used to calculate sales performance, KPIs, and time-based trends.
-
-## Dataset Files
-
-The project includes both raw source files and curated gold-layer CSVs.
-
-### CSV datasets
-
-The CSV files under datasets/csv_files include:
-
-- source bronze and silver data files,
-- gold.dim_customers.csv,
-- gold.dim_products.csv,
-- gold.fact_sales.csv,
-- export files used to build analytical views.
-
-The script files use the gold-level tables as the primary analytical dataset.
-
-### Backup file
-
-The repository also contains DataWarehouseAnalytics.bak, which can be used to restore the database if a backup is needed.
-
-## Prerequisites
-
-To run this project successfully, you need:
-
-- Microsoft SQL Server (preferably SQL Server 2019 or newer)
-- SQL Server Management Studio (SSMS) or Azure Data Studio
-- access to create/drop databases and schemas
-- local file access for BULK INSERT operations
-- enough permissions to read CSV files from the configured path
-
-## Setup and Execution
-
-### 1. Open the project in SQL Server tools
-
-Open SQL Server Management Studio and connect to your SQL Server instance.
-
-### 2. Update file paths in the database initialization script
-
-The initialization script uses a fixed BULK INSERT path:
+1. Open the database creation script in SSMS or another SQL client.
+2. Update all BULK INSERT file paths to match the local repository location on the machine running SQL Server.
+3. The script currently references a path format similar to:
 
 ```sql
 C:\sql\sql-data-analytics-project\datasets\csv-files\gold.dim_customers.csv
 ```
 
-In this workspace, the actual folder is named datasets/csv_files, not csv-files. You should update the paths in 00_init_database.sql to match your local path before executing the script.
+In this repository, the CSV files are stored under `datasets/csv_files`, so the path should be adjusted to the local environment before execution.
 
-Example adjustment:
+4. Run the scripts in the following order:
 
 ```sql
-FROM 'C:\path\to\SQL_Data_Analytics\datasets\csv_files\gold.dim_customers.csv'
+00_init_database.sql
+01_database_exploration.sql
+02_dimensions_exploration.sql
+03_date_range_exploration.sql
+04_measures_exploration.sql
+05_magnitude_analysis.sql
+06_ranking_analysis.sql
+07_change_over_time_analysis.sql
+08_cumulative_analysis.sql
+09_performance_analysis.sql
+10_data_segmentation.sql
+11_part_to_whole_analysis.sql
+12_report_customers.sql
+13_report_products.sql
 ```
 
-This is an important setup step because SQL Server BULK INSERT requires a valid local filesystem path.
+5. Verify that the database `DataWarehouseAnalytics` is created and that the `gold` schema tables are populated.
 
-### 3. Run the database creation script
+## SQL Concepts Demonstrated
 
-Execute the scripts in the following order:
+This project applies a practical set of SQL techniques used in analytical and data engineering work:
 
-1. 00_init_database.sql
-2. 01_database_exploration.sql
-3. 02_dimensions_exploration.sql
-4. 03_date_range_exploration.sql
-5. 04_measures_exploration.sql
-6. 05_magnitude_analysis.sql
-7. 06_ranking_analysis.sql
-8. 07_change_over_time_analysis.sql
-9. 08_cumulative_analysis.sql
-10. 09_performance_analysis.sql
-11. 10_data_segmentation.sql
-12. 11_part_to_whole_analysis.sql
-13. 12_report_customers.sql
-14. 13_report_products.sql
+- CREATE DATABASE and CREATE TABLE statements
+- BULK INSERT for loading CSV-based source data
+- SELECT with filtering and ordering
+- GROUP BY and aggregate functions
+- COUNT, SUM, AVG, MIN, MAX, and DISTINCT
+- Date functions such as YEAR, MONTH, DATEDIFF, and DATETRUNC
+- Window functions including SUM() OVER(), AVG() OVER(), and LAG()
+- Ranking logic using ORDER BY and top-N queries
+- CASE expressions for segmentation and business logic
+- CTEs to structure multi-step analytical queries
+- Views to build reusable reporting outputs
 
-## Script Breakdown
+## What This Project Demonstrates
 
-### 00_init_database.sql
+This project demonstrates a strong foundation in SQL analytics and data preparation for internship-level work in Data Analytics and Data Engineering. It shows the ability to:
 
-Creates the DataWarehouseAnalytics database, creates the gold schema, defines the main tables, and loads the gold CSV files into the warehouse.
+- design a simple warehouse structure from raw data,
+- load analytic datasets into SQL Server,
+- perform exploratory analysis on real business data,
+- build KPI and trend analysis using SQL,
+- structure queries for business reporting,
+- apply segmentation and ranking logic in a data-driven way.
 
-### 01_database_exploration.sql
+It is not presented as a full production data platform, but it reflects a realistic analytical workflow that is commonly used in reporting, BI, and data engineering contexts.
 
-Inspects table metadata and schema details using INFORMATION_SCHEMA. This is useful for understanding the database structure and validating columns.
+## Future Improvements
 
-### 02_dimensions_exploration.sql
+Potential next steps for this project include:
 
-Explores the dimensions by extracting unique customer countries and product categories/subcategories.
+- adding automated data quality checks and validation queries,
+- creating a dashboard or Power BI reporting layer on top of the warehouse,
+- implementing a more formal data pipeline with orchestration,
+- expanding the schema with additional dimensions or fact tables,
+- moving the project to a cloud-based warehouse workflow such as Azure SQL or Synapse.
 
-### 03_date_range_exploration.sql
-
-Looks at the earliest and latest order dates and calculates the data coverage window.
-
-### 04_measures_exploration.sql
-
-Calculates high-level business KPIs such as:
-
-- total sales,
-- total quantity,
-- average price,
-- total orders,
-- total products,
-- total customers.
-
-### 05_magnitude_analysis.sql
-
-Measures distribution across categories and customer groups, including:
-
-- customers by country,
-- customers by gender,
-- products by category,
-- average product cost by category,
-- revenue by category,
-- revenue by customer,
-- quantity sold by country.
-
-### 06_ranking_analysis.sql
-
-Ranks products and customers by revenue and order counts to surface top and weakest performers.
-
-### 07_change_over_time_analysis.sql
-
-Analyzes sales behavior over time using year/month aggregations and SQL date functions.
-
-### 08_cumulative_analysis.sql
-
-Calculates cumulative totals and moving average values to understand long-term trends.
-
-### 09_performance_analysis.sql
-
-Measures year-over-year and product-level performance using LAG and window functions.
-
-### 10_data_segmentation.sql
-
-Segments products and customers using conditional logic, including cost ranges and customer value tiers such as VIP, Regular, and New.
-
-### 11_part_to_whole_analysis.sql
-
-Shows how categories contribute to the total sales mix, providing a part-to-whole perspective.
-
-### 12_report_customers.sql
-
-Creates a customer reporting view called gold.report_customers. It consolidates metrics such as:
-
-- customer age,
-- age groups,
-- customer segments,
-- recency,
-- total orders,
-- total sales,
-- total quantity,
-- total products,
-- average order value,
-- average monthly spend.
-
-### 13_report_products.sql
-
-Creates a product reporting view called gold.report_products. It consolidates product-level metrics such as:
-
-- total sales,
-- total quantity,
-- total customers,
-- recency,
-- product segments,
-- average selling price,
-- average order revenue,
-- average monthly revenue.
-
-## Analytics Topics Covered
-
-This project demonstrates a broad set of SQL analytics skills, including:
-
-- database creation and schema setup,
-- schema discovery and metadata inspection,
-- grouping and aggregation,
-- date and time analysis,
-- customer and product segmentation,
-- ranking and top-N analysis,
-- part-to-whole analysis,
-- cumulative metrics,
-- window functions,
-- KPI reporting through views.
-
-## Typical Business Questions Answered
-
-This project is designed to answer questions such as:
-
-- Which countries have the most customers?
-- Which product categories generate the most revenue?
-- Who are the top revenue-generating customers?
-- Which products rank highest in sales?
-- How do sales trends evolve over time?
-- Which customer segments are most valuable?
-- What share of total sales comes from each category?
-- How do monthly and yearly sales compare?
-
-## Notes for Learning and Customization
-
-This repository is intended as an educational SQL analytics project. The scripts are designed to be readable and practical, with a focus on demonstrating common analytical patterns in T-SQL.
-
-A few considerations:
-
-- path configuration for BULK INSERT must be adjusted per environment,
-- some scripts are structured as demonstration examples and may require minor verification before use in production,
-- if you are adapting the project to a different SQL Server setup, review file paths, database naming, and schema ownership first.
-
-## Recommended Workflow
-
-For a beginner-friendly progression, use the project in this order:
-
-1. load the database,
-2. inspect schema and dimension values,
-3. compute basic KPIs,
-4. explore trends and distributions,
-5. apply ranking and segmentation,
-6. review the final customer/product reporting views.
-
-This sequence makes it easier to understand how a simple analytical warehouse evolves from raw data to business insight.
-
-## Summary
-
-The SQL_Data_Analytics project is a practical, end-to-end exercise in SQL-based business intelligence. It combines schema creation, data loading, exploratory analysis, KPI calculation, segmentation, time-series analysis, and reporting in a compact and accessible format.
-
-It is especially well suited for:
-
-- learning SQL analytics,
-- understanding fact and dimension tables,
-- practicing aggregation and window functions,
-- creating business reports from a sample data warehouse.
+These are future improvements rather than completed work in the current repository.
 
 ---
 
-This project is a strong foundation for extending into more advanced SQL analytics, dashboarding, or data warehouse design work.
+This project reflects a practical SQL analytics workflow designed to explore a retail sales dataset, answer business questions, and demonstrate analytical thinking in a portfolio-ready format.
